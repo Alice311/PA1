@@ -34,20 +34,28 @@ int main(int argc, char *argv[])
     opterr = 0;
     int ch;
 
-   while((ch = getopt(argc, argv, FLAGS)) != -1)
+   while((ch = getopt(argc,argv,FLAGS))!=-1)
    {
     fp = fopen(optarg, "r");
-    if( ch == HELP_FLAG){
+    switch(ch)
+    {
+      case HELP_FLAG:
         fprintf(stdout, "%s", LONG_USAGE);
-        return 0;}
-	
-    if((ch == INFILE_FLAG) && ((fp = fopen(optarg, "r")) == NULL)){
+        return 0;
+        break;
+
+      case INFILE_FLAG:
+	if(fp== NULL){
 	perror(FILTER_ERR);
    	fprintf(stderr, "%s", SHORT_USAGE);
 	return 1;}
-
+        break;
+    
+      default:
         fprintf(stderr, "%s", LONG_USAGE);
         return 1;
+	break;
+    }
 }
 	
     linkedListNode_t **hashtbl = newLinkedListArray(DEFAULT_SIZE);
